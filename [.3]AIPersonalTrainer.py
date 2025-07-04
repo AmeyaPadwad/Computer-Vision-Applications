@@ -14,23 +14,30 @@ while True:
     img = cv.resize(img, (1280, 720))
     lmList, img = detector.trackPose(img, draw=False)
 
-    if len(lmList)!= 0 :
+    if len(lmList) != 0:
         angle = detector.findAngle(img, 11, 13, 15)
         # detector.findAngle(img, 12, 14, 16)
 
-        per = np.interp(angle, (210, 310), (0,100))
-        
+        per = np.interp(angle, (210, 310), (0, 100))
+
         if per == 100 and flag:
             curlCount += 1
             flag = False
         if per == 0:
             flag = True
-    
-        cv.rectangle(img, (40, 30), (290, 70), (0,0,0), cv.FILLED)
-        cv.putText(img, "Curl Count: " + str(curlCount), (50, 60), cv.FONT_HERSHEY_PLAIN, 2, (0,255,0), 3)
 
+        cv.rectangle(img, (40, 30), (290, 70), (0, 0, 0), cv.FILLED)
+        cv.putText(
+            img,
+            "Curl Count: " + str(curlCount),
+            (50, 60),
+            cv.FONT_HERSHEY_PLAIN,
+            2,
+            (0, 255, 0),
+            3,
+        )
 
     cv.imshow("img", img)
-    if cv.waitKey(1)==27:
+    if cv.waitKey(1) == 27:
         cv.destroyAllWindows()
         break

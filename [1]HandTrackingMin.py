@@ -12,29 +12,37 @@ pTime = 0
 cTime = 0
 
 while True:
-    
+
     success, img = cap.read()
     h, w, c = img.shape
 
     imgRGB = cv.cvtColor(img, cv.COLOR_BGR2RGB)
     result = hands.process(imgRGB)
-    #print(result.multi_hand_landmarks)
+    # print(result.multi_hand_landmarks)
 
     if result.multi_hand_landmarks:
         for i in result.multi_hand_landmarks:
             for id, lm in enumerate(i.landmark):
-                cx, cy = int(lm.x*w), int(lm.y*h)
+                cx, cy = int(lm.x * w), int(lm.y * h)
                 print(id, cx, cy)
 
                 if id == 0:
-                    cv.circle(img, (cx,cy), 10, (0,255,0), 2)
+                    cv.circle(img, (cx, cy), 10, (0, 255, 0), 2)
             mpDraw.draw_landmarks(img, i, mpHands.HAND_CONNECTIONS)
 
     cTime = time.time()
-    fps = 1/(cTime-pTime)
+    fps = 1 / (cTime - pTime)
     pTime = cTime
 
-    cv.putText(img, "fps: " + str(int(fps)), (10,40), cv.FONT_HERSHEY_SIMPLEX, 1, (0,255,0),2)
+    cv.putText(
+        img,
+        "fps: " + str(int(fps)),
+        (10, 40),
+        cv.FONT_HERSHEY_SIMPLEX,
+        1,
+        (0, 255, 0),
+        2,
+    )
     cv.imshow("image", img)
     k = cv.waitKey(1)
     if k == 27:
